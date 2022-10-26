@@ -1,0 +1,49 @@
+.container {
+  position: relative;
+  margin: 0 4rem;
+  .row {
+    display: flex;
+    flex-wrap: nowrap;
+    position: absolute;
+
+
+
+    .row-inner {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+  .prev-movies {
+    margin-left: 1rem;
+    position: absolute;
+    left: -10vw;
+    display: none;
+  }
+
+  .next-movies {;
+    position: absolute;
+    left: 94.5vw;
+    top: 0;
+    z-index: 9999;
+    background-color: #141414;
+    opacity: 0;
+    height: 100%;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    transition: 0.2s ease-in-out all;
+    cursor: pointer;
+  }
+
+  .prev-movies i, .next-movies i {
+    font-size: 4rem;
+  }
+
+  &:hover {
+    .next-movies {
+      opacity: 0.6;
+      transform: scale(1.2);
+    }
+  }
+}

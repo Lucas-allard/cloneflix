@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {
-    findLastPopularMovies,
+    findLastPopularMovies, findMovie,
     findMovies,
     findMoviesGenres,
     findMoviesWithGenre,
@@ -24,6 +24,14 @@ export const fetchSeriesGenres = createAsyncThunk(
     'genres/findSeriesGenres',
     async () => {
         const response = await findSeriesGenres();
+        return response;
+    }
+)
+
+export const fetchMovie = createAsyncThunk(
+    'movies/findMovie',
+    async (id) => {
+        const response = await findMovie(id)
         return response;
     }
 )
@@ -98,7 +106,9 @@ export const movieSlice = createSlice({
         status: "idle",
         data: {
             genres: null,
+            movie: null,
             movies: null,
+            serie: null,
             series: null,
        },
         error: null,
@@ -110,6 +120,9 @@ export const movieSlice = createSlice({
         },
         [fetchSeriesGenres.fulfilled]: (state, action) => {
             state.data.genres = action.payload
+        },
+        [fetchMovie.fulfilled]: (state, action) => {
+            state.data.movie = action.payload
         },
         [fetchMovies.fulfilled]: (state, action) => {
             state.data.movies = action.payload

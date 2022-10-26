@@ -1,0 +1,48 @@
+header {
+  display: flex;
+  height: 75px;
+  margin: 0 2rem;
+
+  .left-nav-bar, {
+    display: flex;
+    align-items: center;
+
+    .logo-container {
+      max-width: 15%;
+    }
+  }
+
+  .right-nav-bar {
+    display: flex;
+    align-items: center;
+
+    .nav-bar .search-btn span::before {
+      content: "\f002";
+      font-family: "Font Awesome 6 Free Solid";
+      font-weight: 900;
+      font-size: 1.4rem;
+      margin: 0.5em;
+      color: white;
+      width: 24px;
+      height: 24px;
+    }
+    .nav-bar .search-btn span:hover::before {
+      color: gray
+    }
+  }
+
+}
+
+.nav-bar ul {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  a {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    &:hover {
+      color: gray;
+    }
+  }
+}

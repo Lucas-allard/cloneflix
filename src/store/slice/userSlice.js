@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {findUser} from "../../request/UserRequest";
+import {findUser} from "../../request/userRequest";
 
 export const fetchUser = createAsyncThunk(
     'user/findUser',
@@ -13,13 +13,13 @@ export const userSlice = createSlice({
     name: 'user',
     initialState: {
         status: "idle",
-        user: null,
+        data: null,
         error: null,
     },
     reducer: {},
     extraReducers: {
         [fetchUser.fulfilled]: (state, action) => {
-            state.user = action.payload
+            state.data = action.payload
         }
     }
 })

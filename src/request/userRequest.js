@@ -8,6 +8,7 @@ export const findUser = async () => {
             Authorization: `Bearer ${TOKEN}`
         }
     })
+        .then(response => response.data)
         .catch(e => console.log(e));
     return data;
 }

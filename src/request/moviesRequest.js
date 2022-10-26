@@ -26,6 +26,17 @@ export const findSeriesGenres = async () => {
     return data.genres
 }
 
+export const findMovie = async (id) => {
+    const data = await axios.get(`${ENTRYPOINT}/3/movie/${id}?language=fr`, {
+        headers: {
+            Authorization: `Bearer ${TOKEN}`
+        }
+    })
+        .then(response => response.data)
+        .catch(e => console.log(e))
+    return data
+}
+
 export const findMovies = async () => {
     const data = await axios.get(`${ENTRYPOINT}/3/discover/movie?language=fr`, {
         headers: {
