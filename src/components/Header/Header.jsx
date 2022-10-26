@@ -1,11 +1,13 @@
 import './header.scss';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import logo from '../../assets/images/Logo_cloneflix.png';
 import {useSelector} from "react-redux";
+import SearchBar from "../Search/SearchBar";
 
-const Header = () => {
-    const {data} = useSelector(state => state.user);
+const Header = ({isActiveSearch, setIsActiveSearch}) => {
+    const {userData} = useSelector(state => state.user);
+
     return (
         <header>
             <div className='left-nav-bar'>
@@ -18,7 +20,7 @@ const Header = () => {
                             <Link to="/browse"> Accueil</Link>
                             <Link to="/movies"> Films</Link>
                             <Link to="/series"> Series</Link>
-                            <Link to="/favoris"> Ma liste</Link>
+                            <Link to="/watchlist"> Ma liste</Link>
                         </li>
                     </ul>
                 </nav>
@@ -27,17 +29,26 @@ const Header = () => {
                 <nav className="nav-bar">
                     <ul>
                         <li>
-                            <Link to="/search" className="search-btn">
-                                <span></span>
-                            </Link>
+                            <div className="search-btn">
+                                <SearchBar isActiveSearch={isActiveSearch}/>
+                                <span
+                                    onClick={() => setIsActiveSearch(!isActiveSearch)}
+                                    style={{opacity: `${isActiveSearch ? 0 : 1}`}}
+                                    className='glass-btn'
+                                ></span>
+
+                            </div>
                         </li>
-                        <li>
-                            <Link to="/profile">
-                                <div className='profil-badge'>
-                                    <img src={`https://image.tmdb.org/t/p/w45${data.avatar.tmdb.avatar_path}`} alt=""/>
-                                </div>
-                            </Link>
-                        </li>
+                        {/*{userData &&*/}
+                        {/*    <li>*/}
+                        {/*        <Link to="/profile">*/}
+                        {/*            <div className='profil-badge'>*/}
+                        {/*                <img src={`https://image.tmdb.org/t/p/w45${userData.avatar.tmdb.avatar_path}`}*/}
+                        {/*                     alt=""/>*/}
+                        {/*            </div>*/}
+                        {/*        </Link>*/}
+                        {/*    </li>*/}
+                        {/*}*/}
                     </ul>
                 </nav>
             </div>

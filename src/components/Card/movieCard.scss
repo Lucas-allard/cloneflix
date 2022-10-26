@@ -92,6 +92,9 @@
               background-color: #2f3640;
               border: 1px solid white;
 
+              &:disabled {
+                opacity: 0;
+              }
               i {
                 color: white
               }

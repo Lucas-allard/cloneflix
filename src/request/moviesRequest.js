@@ -27,7 +27,7 @@ export const findSeriesGenres = async () => {
 }
 
 export const findMovie = async (id) => {
-    const data = await axios.get(`${ENTRYPOINT}/3/movie/${id}?language=fr`, {
+    const data = await axios.get(`${ENTRYPOINT}/3/movie/${id}?language=fr&append_to_response=videos`, {
         headers: {
             Authorization: `Bearer ${TOKEN}`
         }
@@ -73,16 +73,32 @@ export const findTopRatedMovies = async () => {
     return data.results
 }
 
-export const findMoviesWithGenre = async (genre) => {
-    const data = await axios.get(`${ENTRYPOINT}/3/discover/movie?language=fr&with_genres=${genre}`, {
+export const findMoviesWithGenre = async (genres) => {
+    const results = [];
+    for (const genre of genres) {
+        const data = await axios.get(`${ENTRYPOINT}/3/discover/movie?language=fr&with_genres=${genre.id}`, {
+            headers: {
+                Authorization: `Bearer ${TOKEN}`
+            }
+        })
+            .then(response => response.data)
+            .catch(e => console.log(e))
+        const result = data.results
+        results.push(result);
+    }
+    return results;
+
+}
+
+export const findSerie = async (id) => {
+    const data = await axios.get(`${ENTRYPOINT}/3/tv/${id}?language=fr&append_to_response=videos` , {
         headers: {
             Authorization: `Bearer ${TOKEN}`
         }
     })
         .then(response => response.data)
         .catch(e => console.log(e))
-
-    return data.results
+    return data
 }
 
 export const findSeries = async () => {
@@ -121,14 +137,19 @@ export const findTopRatedSeries = async () => {
     return data.results
 }
 
-export const findSeriesWithGenres = async (genre) => {
-    const data = await axios.get(`${ENTRYPOINT}/3/discover/tv?language=fr&with_genres=${genre}`, {
-        headers: {
-            Authorization: `Bearer ${TOKEN}`
-        }
-    })
-        .then(response => response.data)
-        .catch(e => console.log(e))
+export const findSeriesWithGenre = async (genres) => {
+    const results = [];
+    for (const genre of genres) {
+        const data = await axios.get(`${ENTRYPOINT}/3/discover/tv?language=fr&with_genres=${genre.id}`, {
+            headers: {
+                Authorization: `Bearer ${TOKEN}`
+            }
+        })
+            .then(response => response.data)
+            .catch(e => console.log(e))
+        const result = data.results
+        results.push(result);
+    }
+    return results;
 
-    return data.results
 }

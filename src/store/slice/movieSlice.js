@@ -4,9 +4,9 @@ import {
     findMovies,
     findMoviesGenres,
     findMoviesWithGenre,
-    findPopularSeries,
+    findPopularSeries, findSerie,
     findSeries,
-    findSeriesGenres,
+    findSeriesGenres, findSeriesWithGenre,
     findSeriesWithGenres,
     findTopRatedMovies,
     findTopRatedSeries
@@ -68,6 +68,14 @@ export const fetchMoviesWithGenres = createAsyncThunk(
     }
 )
 
+export const fetchSerie = createAsyncThunk(
+    'series/findSerie',
+    async (id) => {
+        const response = await findSerie(id);
+        return response;
+    }
+)
+
 export const fetchSeries = createAsyncThunk(
     'series/findSeries',
     async () => {
@@ -95,7 +103,7 @@ export const fetchTopRatedSeries = createAsyncThunk(
 export const fetchSeriesWithGenres = createAsyncThunk(
     "movies/findSeriesWithGenres",
     async (genres) => {
-        const response = await findSeriesWithGenres(genres);
+        const response = await findSeriesWithGenre(genres);
         return response
     }
 )
@@ -105,21 +113,34 @@ export const movieSlice = createSlice({
     initialState: {
         status: "idle",
         data: {
-            genres: null,
             movie: null,
-            movies: null,
+            movies: {
+                genres: null,
+                popularMovies: null,
+                topRatedMovies: null,
+                moviesWithGenre: {
+
+                }
+            },
             serie: null,
-            series: null,
+            series: {
+                genres: null,
+                popularSeries: null,
+                topRatedSeries: null,
+                seriesWithGenre: {
+
+                }
+            },
        },
         error: null,
     },
     reducer: {},
     extraReducers: {
-        [fetchMoviesGenres().fulfilled]: (state, action) => {
-            state.data.genres = action.payload
+        [fetchMoviesGenres.fulfilled]: (state, action) => {
+            state.data.movies.genres = action.payload
         },
         [fetchSeriesGenres.fulfilled]: (state, action) => {
-            state.data.genres = action.payload
+            state.data.series.genres = action.payload
         },
         [fetchMovie.fulfilled]: (state, action) => {
             state.data.movie = action.payload
@@ -128,25 +149,28 @@ export const movieSlice = createSlice({
             state.data.movies = action.payload
         },
         [fetchLastPopularMovies.fulfilled]: (state, action) => {
-            state.data.movies = action.payload
+            state.data.movies.popularMovies = action.payload
         },
         [fetchTopRatedMovies.fulfilled]: (state, action) => {
-            state.data.movies = action.payload
+            state.data.movies.topRatedMovies = action.payload
         },
         [fetchMoviesWithGenres.fulfilled]: (state, action) => {
-            state.data.movies = action.payload
+            state.data.movies.moviesWithGenre = action.payload
+        },
+        [fetchSerie.fulfilled]: (state, action) => {
+            state.data.serie = action.payload
         },
         [fetchSeries.fulfilled]: (state, action) => {
-            state.data.movies = action.payload
-        },
-        [fetchPopularSeries.fulfilled]: (state, action) => {
             state.data.series = action.payload
         },
+        [fetchPopularSeries.fulfilled]: (state, action) => {
+            state.data.series.popularSeries = action.payload
+        },
         [fetchTopRatedSeries.fulfilled]: (state, action) => {
-            state.data.series= action.payload
+            state.data.series.topRatedSeries = action.payload
         },
         [fetchSeriesWithGenres.fulfilled]: (state, action) => {
-            state.data.movies = action.payload
+            state.data.series.seriesWithGenre = action.payload
         },
 
     }

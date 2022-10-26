@@ -1,23 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchLastPopularMovies, fetchMovie} from "../../store/slice/movieSlice";
+import {fetchTopRatedMovies, fetchMovie} from "../../store/slice/movieSlice";
 import MovieCard from "../Card/MovieCard";
 import MovieModal from "../Modal/MovieModal";
 import './movies.scss';
 import '../Card/movieCard.scss';
 
 
-const PopularMovies = () => {
-    const {popularMovies} = useSelector(state => state.movies.data.movies);
+const TopRatedMovies = () => {
+    const {topRatedMovies} = useSelector(state => state.movies.data.movies);
     const {movie} = useSelector(state => state.movies.data);
     const dispatch = useDispatch();
     const [isActiveModal, setIsActiveModal] = useState(false);
     const [isActiveSlide, setIsActiveSlide] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchLastPopularMovies())
+        dispatch(fetchTopRatedMovies())
     }, [])
-
 
     // const onHandleClick = () => {
     //     window.scrollTo(-300, 0)
@@ -32,10 +31,10 @@ const PopularMovies = () => {
     return (
         <>
             <section className="container">
-                <h1>Films les plus regardés</h1>
+                <h1>Films les mieux notés</h1>
                 <div className="row">
                     <div className={`row-inner ${isActiveSlide ? "slide play" : "slide"}`}>
-                        {popularMovies && popularMovies.map((movie, index) =>
+                        {topRatedMovies && topRatedMovies.map((movie, index) =>
                             (
                                 <div key={index}>
                                     <MovieCard
@@ -70,4 +69,4 @@ const PopularMovies = () => {
     );
 }
 
-export default PopularMovies;
+export default TopRatedMovies;

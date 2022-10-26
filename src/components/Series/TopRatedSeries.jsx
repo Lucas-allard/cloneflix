@@ -1,21 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchLastPopularMovies, fetchMovie} from "../../store/slice/movieSlice";
+import {
+    fetchTopRatedSeries
+} from "../../store/slice/movieSlice";
 import MovieCard from "../Card/MovieCard";
 import MovieModal from "../Modal/MovieModal";
-import './movies.scss';
+import '../Movies/movies.scss';
 import '../Card/movieCard.scss';
 
-
-const PopularMovies = () => {
-    const {popularMovies} = useSelector(state => state.movies.data.movies);
-    const {movie} = useSelector(state => state.movies.data);
+const TopRatedSeries = () => {
+    const {topRatedSeries} = useSelector(state => state.movies.data.series);
+    const {serie} = useSelector(state => state.movies.data);
     const dispatch = useDispatch();
     const [isActiveModal, setIsActiveModal] = useState(false);
     const [isActiveSlide, setIsActiveSlide] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchLastPopularMovies())
+        dispatch(fetchTopRatedSeries())
     }, [])
 
 
@@ -32,18 +33,18 @@ const PopularMovies = () => {
     return (
         <>
             <section className="container">
-                <h1>Films les plus regardés</h1>
+                <h1>Séries les mieux notées</h1>
                 <div className="row">
                     <div className={`row-inner ${isActiveSlide ? "slide play" : "slide"}`}>
-                        {popularMovies && popularMovies.map((movie, index) =>
+                        {topRatedSeries && topRatedSeries.map((movie, index) =>
                             (
                                 <div key={index}>
                                     <MovieCard
-                                        title={movie.original_title}
+                                        title={movie.original_name}
                                         data={movie}
                                         isActiveModal={isActiveModal}
                                         setIsActiveModal={setIsActiveModal}
-                                        type="movie"
+                                        type="tv"
                                     />
                                 </div>
                             )
@@ -59,8 +60,8 @@ const PopularMovies = () => {
             </section>
             {isActiveModal &&
                 <MovieModal
-                    title={movie.original_title}
-                    movie={movie}
+                    title={serie.original_name}
+                    movie={serie}
                     isActiveModal={isActiveModal}
                     setIsActiveModal={setIsActiveModal}
                 />
@@ -70,4 +71,4 @@ const PopularMovies = () => {
     );
 }
 
-export default PopularMovies;
+export default TopRatedSeries;

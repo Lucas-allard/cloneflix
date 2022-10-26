@@ -1,0 +1,31 @@
+.watchlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    margin: 0 2rem;
+    padding: 0.5rem 1rem;
+    font-size: 3rem;
+    background-color: #2f3640;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
+
+.watchlist {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  .watchlist-item {
+    margin-bottom: 7rem;
+
+    .tile .features-action {
+      button:nth-child(2) {
+        display: none!important;
+      }
+    }
+  }
+}

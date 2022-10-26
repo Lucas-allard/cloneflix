@@ -1,12 +1,10 @@
 import React from 'react';
 import './movieModal.scss';
 
-const MovieModal = ({movie, isActiveModal, setIsActiveModal}) => {
-    const titleInArray = movie.original_title.split(" ");
-    console.log(movie)
+const MovieModal = ({movie, title, setIsActiveModal}) => {
+    const titleInArray = title.split(" ");
 
     const onHandleCloseModal = (e) => {
-        console.log(e.clientX)
         if (e.clientX < 330 || e.clientX > 1000) {
             setIsActiveModal(false);
         }
@@ -15,7 +13,18 @@ const MovieModal = ({movie, isActiveModal, setIsActiveModal}) => {
         <div className="modal-container" onClick={(e) => onHandleCloseModal(e)}>
             <div className='modal'>
                 <div className="modal-media">
-                    <img src={`https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`} alt="image du film"/>
+                    {movie.videos ?
+                        <iframe
+                            width="853"
+                            height="480"
+                            src={`https://www.youtube.com/embed/${movie.videos.results[0]}`}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            title="Embedded youtube"
+                        />
+                        : <img src={`https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`} alt="image du film"/>
+                    }
+                    
                 </div>
                 <div className="modal-title">
                     <h2>
