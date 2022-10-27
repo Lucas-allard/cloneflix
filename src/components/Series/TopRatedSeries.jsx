@@ -22,39 +22,27 @@ const TopRatedSeries = () => {
 
         setTimeout(() => {
             setIsLoading(false)
-        }, 1000)
+        }, 1500)
     }, [])
-
-
-    // const onHandleClick = () => {
-    //     window.scrollTo(-300, 0)
-    //     // setIsActiveSlide(true);
-    //     //
-    //     // setTimeout(() => {
-    //     //     setIsActiveSlide(false)
-    //     // }, 500)
-    //
-    // }
 
     return (
         <>
             <section className="container">
-                <h1>Séries les mieux notées</h1>
+                <h2>Séries les mieux notées</h2>
                 <div className="row">
                     <div className={`row-inner ${isActiveSlide ? "slide play" : "slide"}`}>
-                        {topRatedSeries && topRatedSeries.map((movie, index) => {
-                                return isLoading ?
-                                    <MyLoader key={index}/>
-                                    : <div key={index}>
-                                        <MovieCard
-                                            title={movie.original_name}
-                                            data={movie}
-                                            isActiveModal={isActiveModal}
-                                            setIsActiveModal={setIsActiveModal}
-                                            type="tv"
-                                        />
-                                    </div>
-                            }
+                        {topRatedSeries && topRatedSeries.map((movie, index) => (
+                                <div key={index}>
+                                    <MovieCard
+                                        title={movie.original_name}
+                                        data={movie}
+                                        isActiveModal={isActiveModal}
+                                        setIsActiveModal={setIsActiveModal}
+                                        type="tv"
+                                        isLoading={isLoading}
+                                    />
+                                </div>
+                            )
                         )}
                     </div>
                     <div className="prev-movies">
@@ -67,6 +55,7 @@ const TopRatedSeries = () => {
             </section>
             {isActiveModal &&
                 <MovieModal
+                    type="tv"
                     title={serie.original_name}
                     movie={serie}
                     isActiveModal={isActiveModal}

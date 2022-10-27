@@ -1,9 +1,8 @@
 .modal-container {
   width: 100vw;
   height: 100vh;
-  //background-color: #141414;
-  //box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(2px);
+  background-color: rgba(24, 24, 24, 0.5);
+  backdrop-filter: blur(4px);
   z-index: 9999999;
   position: absolute;
   top: 0;
@@ -16,28 +15,86 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background-color: #181818;
+    padding-bottom: 2rem;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 
     .modal-media {
       background: linear-gradient(0deg, #181818, transparent 50%);
-    }
+      position: relative;
 
-    .modal-title {
-      position: absolute;
-      top: 45%;
-      margin: 1rem;
+      .modal-title {
+        position: absolute;
+        bottom: 35%;
+        margin: 1rem;
 
-      span {
-        font-family: 'Press Start 2P', cursive;
+        span {
+          font-family: 'Press Start 2P', cursive;
 
-        &:first-child {
-          color: #D81F26
+          &:first-child {
+            color: #D81F26
+          }
+        }
+      }
+
+      .modal-features {
+        button {
+          position: absolute;
+          font-size: 2rem;
+          cursor: pointer;
+          margin: 1rem;
+          padding: 0.5rem 1rem;
+
+          &:first-child {
+            bottom: 15%;
+
+            i {
+              margin-left: 1rem;
+            }
+          }
+
+          &:nth-child(2) {
+            border-radius: 50%;
+            background-color: #2f3640;
+            border: 1px solid white;
+            bottom: 15%;
+            left: 130px;
+
+            i {
+              color: white;
+            }
+          }
+
+          &:nth-child(3) {
+            border-radius: 50%;
+            background-color: #2f3640;
+            border: 1px solid white;
+            bottom: 15%;
+            left: 178px;
+
+            i {
+              color: white;
+            }
+          }
+
+          &:last-child {
+            border-radius: 50%;
+            background-color: #2f3640;
+            border: 1px solid white;
+            top: 0;
+            right: 0;
+
+            i {
+              color: white;
+            }
+          }
         }
       }
     }
 
     .modal-rate {
       display: flex;
-      padding: 1rem 0;
+      padding: 2rem 1rem;
 
       p {
         margin: 0 1rem;
@@ -52,18 +109,18 @@
     .modal-detail {
       display: flex;
       justify-content: space-around;
+      line-height: 1.5;
 
       .modal-content {
         flex: 2;
-        padding: 1rem 0;
+        padding: 2rem;
 
 
         .modal-overview {
-          padding: 1rem 0;
 
           p {
             margin: 0 1rem;
-            line-height: 1.5;
+
           }
         }
       }
@@ -72,7 +129,7 @@
         flex: 1;
         display: flex;
         justify-content: flex-end;
-        padding: 1rem 0;
+        padding: 2rem;
 
         .modal-real {
           margin: 0 1rem;
@@ -86,60 +143,5 @@
 
     }
 
-
-    .modal-features {
-      button {
-        position: absolute;
-        font-size: 2rem;
-        cursor: pointer;
-        margin: 1rem;
-        padding: 0.5rem 1rem;
-
-        &:first-child {
-          top: 50%;
-
-          i {
-            margin-left: 1rem;
-          }
-        }
-
-        &:nth-child(2) {
-          border-radius: 50%;
-          background-color: #2f3640;
-          border: 1px solid white;
-          top: 50%;
-          left: 120px;
-
-          i {
-            color: white;
-          }
-        }
-
-        &:nth-child(3) {
-          border-radius: 50%;
-          background-color: #2f3640;
-          border: 1px solid white;
-          top: 50%;
-          left: 168px;
-
-          i {
-            color: white;
-          }
-        }
-
-        &:last-child {
-          border-radius: 50%;
-          background-color: #2f3640;
-          border: 1px solid white;
-          top: 0;
-          right: 0;
-
-          i {
-            color: white;
-          }
-        }
-      }
-
-    }
   }
 }

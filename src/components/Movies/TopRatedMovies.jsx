@@ -21,28 +21,26 @@ const TopRatedMovies = () => {
 
         setTimeout(() => {
             setIsLoading(false)
-        }, 1000)
+        }, 1500)
     }, [])
 
     return (
         <>
             <section className="container">
-                <h1>Films les mieux notés</h1>
+                <h2>Films les mieux notés</h2>
                 <div className="row">
                     <div className={`row-inner ${isActiveSlide ? "slide play" : "slide"}`}>
-                        {topRatedMovies && topRatedMovies.map((movie, index) => {
-                                return isLoading ?
-                                    <MyLoader key={index}/>
-                                    : <div key={index}>
-                                        <MovieCard
-                                            title={movie.original_title}
-                                            data={movie}
-                                            isActiveModal={isActiveModal}
-                                            setIsActiveModal={setIsActiveModal}
-                                            type="movie"
-                                        />
-                                    </div>
-                            }
+                        {topRatedMovies && topRatedMovies.map((movie, index) => (<div key={index}>
+                                    <MovieCard
+                                        title={movie.original_title}
+                                        data={movie}
+                                        isActiveModal={isActiveModal}
+                                        setIsActiveModal={setIsActiveModal}
+                                        type="movie"
+                                        isLoading={isLoading}
+                                    />
+                                </div>
+                            )
                         )}
                     </div>
                     <div className="prev-movies">
@@ -55,6 +53,7 @@ const TopRatedMovies = () => {
             </section>
             {isActiveModal &&
                 <MovieModal
+                    type="movie"
                     title={movie.original_title}
                     movie={movie}
                     isActiveModal={isActiveModal}

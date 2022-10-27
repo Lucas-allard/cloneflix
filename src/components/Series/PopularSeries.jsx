@@ -20,29 +20,28 @@ const PopularSeries = () => {
 
         setTimeout(() => {
             setIsLoading(false)
-        }, 1000)
+        }, 1500)
     }, [])
 
 
     return (
         <>
             <section className="container">
-                <h1>Séries les plus regardées</h1>
+                <h2>Séries les plus regardées</h2>
                 <div className="row">
                     <div className={`row-inner ${isActiveSlide ? "slide play" : "slide"}`}>
-                        {popularSeries && popularSeries.map((movie, index) => {
-                                return isLoading ?
-                                    <MyLoader key={index}/>
-                                    : <div key={index}>
-                                        <MovieCard
-                                            data={movie}
-                                            title={movie.original_name}
-                                            isActiveModal={isActiveModal}
-                                            setIsActiveModal={setIsActiveModal}
-                                            type="tv"
-                                        />
-                                    </div>
-                            }
+                        {popularSeries && popularSeries.map((movie, index) => (
+                            <div key={index}>
+                                    <MovieCard
+                                        data={movie}
+                                        title={movie.original_name}
+                                        isActiveModal={isActiveModal}
+                                        setIsActiveModal={setIsActiveModal}
+                                        type="tv"
+                                        isLoading={isLoading}
+                                    />
+                                </div>
+                            )
                         )}
                     </div>
                     <div className="prev-movies">
@@ -55,6 +54,7 @@ const PopularSeries = () => {
             </section>
             {isActiveModal &&
                 <MovieModal
+                    type="tv"
                     title={serie.original_name}
                     movie={serie}
                     isActiveModal={isActiveModal}

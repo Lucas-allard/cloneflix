@@ -37,58 +37,63 @@ export const findWatchListSeries = async (id) => {
 
 }
 
-export const addToWatchList = async (type, id, data) => {
+export const addToWatchList = async (data) => {
     let transformData = {
-        "media_type": type,
-        "media_id": data.id,
+        "media_type": data.type,
+        "media_id": data.movie.id,
         "watchlist": true
     }
-    console.log(data.id)
     transformData = JSON.stringify(transformData);
-    return await axios.post(`${ENTRYPOINT}/3/account/${id}/watchlist?language=fr`, transformData, {
+    return await axios.post(`${ENTRYPOINT}/3/account/${data.id}/watchlist?language=fr`, transformData, {
         headers: {
             Authorization: `Bearer ${TOKEN}`,
             "Content-Type": "application/json;charset=utf-8"
 
         }
     })
-        .then(response => console.log(response))
         .catch(e => console.log(e))
 
 }
 
-export const removeToWatchList = async (type, id, data) => {
-    console.log("remove")
+export const removeToWatchListMovies = async (data) => {
     let transformData = {
-        "media_type": type,
-        "media_id": data.id,
+        "media_type": data.type,
+        "media_id": data.movie.id,
         "watchlist": false
     }
-    try {
-        transformData = JSON.stringify(transformData);
-        console.log(transformData)
-        const deleteData = await axios.post(`${ENTRYPOINT}/3/account/${id}/watchlist?language=fr`, transformData, {
-            headers: {
-                Authorization: `Bearer ${TOKEN}`,
-                "Content-Type": "application/json;charset=utf-8"
 
-            }
-        })
-        console.log(deleteData)
-    } catch(e) {
-        console.log(e)
+    transformData = JSON.stringify(transformData);
+    const deleteData = await axios.post(`${ENTRYPOINT}/3/account/${data.id}/watchlist?language=fr`, transformData, {
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+            "Content-Type": "application/json;charset=utf-8"
+
+        }
+    })
+
+
+    const newData = await findWatchListMovies(data.id);
+    return newData;
+}
+
+export const removeToWatchListSeries = async (data) => {
+    let transformData = {
+        "media_type": data.type,
+        "media_id": data.movie.id,
+        "watchlist": false
     }
 
+    transformData = JSON.stringify(transformData);
+    const deleteData = await axios.post(`${ENTRYPOINT}/3/account/${data.id}/watchlist?language=fr`, transformData, {
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+            "Content-Type": "application/json;charset=utf-8"
 
+        }
+    })
 
-    // if (type === "movie") {
-    //     const data = findWatchListMovies(id);
-    //     return data;
-    // } else {
-    //     const data = findWatchListSeries(id);
-    //     return data;
-    // }
-
+    const newData = findWatchListSeries(data.id);
+    return newData;
 }
 
 export const searchData = async (query) => {

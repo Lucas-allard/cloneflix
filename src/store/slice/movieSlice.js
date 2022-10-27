@@ -36,14 +36,6 @@ export const fetchMovie = createAsyncThunk(
     }
 )
 
-export const fetchMovies = createAsyncThunk(
-    'movies/findMovies',
-    async () => {
-        const response = await findMovies();
-        return response;
-    }
-)
-
 export const fetchLastPopularMovies = createAsyncThunk(
     'movies/findLastPopularMovies',
     async () => {
@@ -72,14 +64,6 @@ export const fetchSerie = createAsyncThunk(
     'series/findSerie',
     async (id) => {
         const response = await findSerie(id);
-        return response;
-    }
-)
-
-export const fetchSeries = createAsyncThunk(
-    'series/findSeries',
-    async () => {
-        const response = await findSeries();
         return response;
     }
 )
@@ -134,7 +118,14 @@ export const movieSlice = createSlice({
        },
         error: null,
     },
-    reducer: {},
+    reducers: {
+        deleteMovie: (state, action) => {
+            state.data.movie = action.payload
+        },
+        deleteSerie: (state, action) => {
+            state.data.serie = action.payload
+        }
+    },
     extraReducers: {
         [fetchMoviesGenres.fulfilled]: (state, action) => {
             state.data.movies.genres = action.payload
@@ -144,9 +135,6 @@ export const movieSlice = createSlice({
         },
         [fetchMovie.fulfilled]: (state, action) => {
             state.data.movie = action.payload
-        },
-        [fetchMovies.fulfilled]: (state, action) => {
-            state.data.movies = action.payload
         },
         [fetchLastPopularMovies.fulfilled]: (state, action) => {
             state.data.movies.popularMovies = action.payload
@@ -160,9 +148,6 @@ export const movieSlice = createSlice({
         [fetchSerie.fulfilled]: (state, action) => {
             state.data.serie = action.payload
         },
-        [fetchSeries.fulfilled]: (state, action) => {
-            state.data.series = action.payload
-        },
         [fetchPopularSeries.fulfilled]: (state, action) => {
             state.data.series.popularSeries = action.payload
         },
@@ -175,6 +160,8 @@ export const movieSlice = createSlice({
 
     }
 })
+
+export const { deleteMovie, deleteSerie } = movieSlice.actions
 
 export default movieSlice.reducer
 

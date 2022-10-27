@@ -1,7 +1,7 @@
 import './assets/styles/reset.css';
 import './assets/styles/normalize.css';
 import './assets/styles/index.scss';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Homepage from "./pages/HomePage";
 import MoviesPage from "./pages/MoviesPage";
@@ -11,6 +11,7 @@ import WatchListPage from "./pages/WatchListPage";
 import Header from "./components/Header/Header";
 import SearchPage from "./pages/SearchPage";
 import {useSelector} from "react-redux";
+import PrivateRoute from "./components/Routes/PrivateRoute";
 
 const App = () => {
     const {userData} = useSelector(state => state.user)
@@ -21,6 +22,7 @@ const App = () => {
             setIsActiveSearch(false);
         }
     }
+
     return (
         <main onClick={(e) => onHandleCloseSearchBar(e)}>
             <BrowserRouter>
@@ -30,8 +32,14 @@ const App = () => {
                     <Route path="/browse" element={<Homepage/>}/>
                     <Route path="/movies/" element={<MoviesPage/>}/>
                     <Route path="/series" element={<SeriesPage/>}/>
-                    <Route path="/watchlist" element={<WatchListPage/>}/>
                     <Route path="/search" element={<SearchPage/>}/>
+                    <Route path="/watchlist"
+                           element={
+                               <PrivateRoute>
+                                   <WatchListPage/>
+                               </PrivateRoute>
+                           }
+                    />
                 </Routes>
             </BrowserRouter>
         </main>

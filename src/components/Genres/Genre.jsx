@@ -9,25 +9,25 @@ import MovieCard from "../Card/MovieCard";
 import MovieModal from "../Modal/MovieModal";
 import MyLoader from "../Loader/Loader";
 
-const Genre = ({genres, type}) => {
+const Genre = ({genres, type, isActiveModal, setIsActiveModal}) => {
     const {moviesWithGenre} = useSelector(state => state.movies.data.movies)
     const {seriesWithGenre} = useSelector(state => state.movies.data.series)
     const {movie, serie} = useSelector(state => state.movies.data);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true)
-    const [isActiveModal, setIsActiveModal] = useState(false);
+
 
 
     useEffect(() => {
-        if (type === "film") {
+        if (type === "movie") {
             dispatch(fetchMoviesWithGenres(genres));
-        } else if (type === "serie") {
+        } else if (type === "tv") {
             dispatch(fetchSeriesWithGenres(genres));
         }
 
         setTimeout(() => {
             setIsLoading(false)
-        }, 1000)
+        }, 1500)
     }, [])
 
     useEffect(() => {
@@ -37,13 +37,13 @@ const Genre = ({genres, type}) => {
     return genres.map((genre, index) => (
             <div key={index}>
                 <section className="container">
-                    <h1>{genre.name}</h1>
+                    <h2>{genre.name}</h2>
                     <div className="row">
                         <div className={`row-inner`}>
                             {
-                                type === "film" ?
+                                type === "movie" ?
                                     moviesWithGenre[index] && moviesWithGenre[index].map((movie, index) =>
-                                        isLoading ? <MyLoader key={index}/> :
+                                        (
                                             <div key={index}>
                                                 <MovieCard
                                                     data={movie}
@@ -51,12 +51,15 @@ const Genre = ({genres, type}) => {
                                                     isActiveModal={isActiveModal}
                                                     setIsActiveModal={setIsActiveModal}
                                                     type="movie"
+                                                    isLoading={isLoading}
                                                 />
                                             </div>
+                                        )
                                     )
                                     :
                                     seriesWithGenre[index] && seriesWithGenre[index].map((serie, index) =>
-                                        isLoading ? <MyLoader key={index}/> :
+                                        (
+
                                             <div key={index}>
                                                 <MovieCard
                                                     data={serie}
@@ -64,29 +67,16 @@ const Genre = ({genres, type}) => {
                                                     isActiveModal={isActiveModal}
                                                     setIsActiveModal={setIsActiveModal}
                                                     type="tv"
+                                                    isLoading={isLoading}
                                                 />
                                             </div>
+                                        )
                                     )
                             }
                         </div>
+
                     </div>
                 </section>
-                {isActiveModal && type === "serie" &&
-                    <MovieModal
-                        title={serie.original_name}
-                        movie={serie}
-                        isActiveModal={isActiveModal}
-                        setIsActiveModal={setIsActiveModal}
-                    />
-                }
-                {isActiveModal && type === "film" &&
-                    <MovieModal
-                        title={movie.original_title}
-                        movie={movie}
-                        isActiveModal={isActiveModal}
-                        setIsActiveModal={setIsActiveModal}
-                    />
-                }
             </div>
         )
     );

@@ -1,50 +1,65 @@
 import React from 'react';
 import './movieModal.scss';
+import {useDispatch, useSelector} from "react-redux";
+import {deleteMovie, deleteSerie} from "../../store/slice/movieSlice";
+import {addNewToWatchList, removeNewToWatchListMovies, removeNewToWatchListSeries} from "../../store/slice/userSlice";
 
-const MovieModal = ({movie, title, setIsActiveModal}) => {
+const MovieModal = ({type, movie, title, setIsActiveModal}) => {
+    const {userData} = useSelector(state => state.user);
+    const dispatch = useDispatch()
     const titleInArray = title.split(" ");
-
+    const data = movie;
+    console.log(data)
     const onHandleCloseModal = (e) => {
         if (e.clientX < 330 || e.clientX > 1000) {
             setIsActiveModal(false);
+            dispatch(deleteMovie(movie))
+            dispatch(deleteSerie(movie));
         }
     }
+
+    const onHandleAddToWatchList = (e, type, id, movie) => {
+
+        dispatch(addNewToWatchList({type, id, movie}))
+        e.currentTarget.disabled = true;
+
+    }
+
+    const onHandleRemoveToWatchList = (type, id, movie) => {
+        if (type === "movie") {
+            dispatch(removeNewToWatchListMovies({type, id, movie}))
+        }
+        if (type === "tv") {
+            dispatch(removeNewToWatchListSeries({type, id, movie}))
+        }
+    }
+
     return (
         <div className="modal-container" onClick={(e) => onHandleCloseModal(e)}>
             <div className='modal'>
                 <div className="modal-media">
-                    {movie.videos ?
-                        <iframe
-                            width="853"
-                            height="480"
-                            src={`https://www.youtube.com/embed/${movie.videos.results[0]}`}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            title="Embedded youtube"
-                        />
-                        : <img src={`https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`} alt="image du film"/>
-                    }
-                    
-                </div>
-                <div className="modal-title">
-                    <h2>
-                        {titleInArray && titleInArray.map((title, index) => <span key={index}> {title}</span>)}
-                    </h2>
-                </div>
-                <div className="modal-features">
-                    <button>
-                        <span>Lecture</span>
-                        <i className="fas fa-play"></i>
-                    </button>
-                    <button>
-                        <i className="fas fa-plus"></i>
-                    </button>
-                    <button>
-                        <i className="fas fa-thumbs-up"></i>
-                    </button>
-                    <button onClick={() => setIsActiveModal(false)}>
-                        <i className="fas fa-times"></i>
-                    </button>
+                    <img src={`https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`} alt="image du film"/>
+                    <div className="modal-title">
+                        <h2>
+                            {titleInArray && titleInArray.map((title, index) => <span key={index}> {title}</span>)}
+                        </h2>
+                    </div>
+                    <div className="modal-features">
+                        <button>
+                            <span>Lecture</span>
+                            <i className="fas fa-play"></i>
+                        </button>
+                        <button>
+                            <i className="fas fa-plus"
+                               onClick={(e) => onHandleAddToWatchList(e, type, userData.id, movie)}></i>
+                        </button>
+                        <button>
+                            <i className="fas fa-thumbs-up"></i>
+                        </button>
+                        <button onClick={() => setIsActiveModal(false)}>
+                            <i className="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
                 <div className="modal-rate">
                     <p>Popularité : <span>{movie.popularity}</span></p>
@@ -61,7 +76,7 @@ const MovieModal = ({movie, title, setIsActiveModal}) => {
                         <div className="modal-real">
                             <p>Production : </p>
                             <ul>
-                                {movie.production_companies.map((e,i) => <li key={i}>{e.name},</li>)}
+                                {movie.production_companies.map((e, i) => <li key={i}>{e.name},</li>)}
                             </ul>
                         </div>
                     </div>
