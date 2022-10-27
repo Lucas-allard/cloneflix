@@ -21,6 +21,7 @@ export const findWatchListMovies = async (id) => {
     })
         .then(response => response.data)
         .catch(e => console.log(e))
+    console.log(data.results)
     return data.results
 
 }
@@ -37,13 +38,12 @@ export const findWatchListSeries = async (id) => {
 }
 
 export const addToWatchList = async (type, id, data) => {
-    console.log(data.id)
     let transformData = {
         "media_type": type,
         "media_id": data.id,
         "watchlist": true
     }
-
+    console.log(data.id)
     transformData = JSON.stringify(transformData);
     return await axios.post(`${ENTRYPOINT}/3/account/${id}/watchlist?language=fr`, transformData, {
         headers: {
@@ -54,6 +54,41 @@ export const addToWatchList = async (type, id, data) => {
     })
         .then(response => console.log(response))
         .catch(e => console.log(e))
+
+}
+
+export const removeToWatchList = async (type, id, data) => {
+    console.log("remove")
+    let transformData = {
+        "media_type": type,
+        "media_id": data.id,
+        "watchlist": false
+    }
+    try {
+        transformData = JSON.stringify(transformData);
+        console.log(transformData)
+        const deleteData = await axios.post(`${ENTRYPOINT}/3/account/${id}/watchlist?language=fr`, transformData, {
+            headers: {
+                Authorization: `Bearer ${TOKEN}`,
+                "Content-Type": "application/json;charset=utf-8"
+
+            }
+        })
+        console.log(deleteData)
+    } catch(e) {
+        console.log(e)
+    }
+
+
+
+    // if (type === "movie") {
+    //     const data = findWatchListMovies(id);
+    //     return data;
+    // } else {
+    //     const data = findWatchListSeries(id);
+    //     return data;
+    // }
+
 }
 
 export const searchData = async (query) => {
@@ -64,7 +99,7 @@ export const searchData = async (query) => {
 
         }
     })
-        .then(response =>response.data)
+        .then(response => response.data)
         .catch(e => console.log(e))
     return data.results
 }

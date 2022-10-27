@@ -4,6 +4,7 @@ import {
     findUser,
     findWatchListMovies,
     findWatchListSeries,
+    removeToWatchList,
     searchData
 } from "../../request/userRequest";
 
@@ -35,7 +36,17 @@ export const addNewToWatchList = createAsyncThunk(
     'user/addToWatchList',
     async (type, id, post) => {
         const response = await addToWatchList(type, id, post)
+        console.log(response)
         return response;
+    }
+)
+
+export const removeNewToWatchList = createAsyncThunk(
+    'user/removeToWatchList',
+    async (type, id, post) => {
+        const response = await removeToWatchList(type, id, post)
+        console.log(response)
+        return "ok";
     }
 )
 
@@ -72,10 +83,19 @@ export const userSlice = createSlice({
         [fetchWatchListSeries.fulfilled]: (state, action) => {
             state.watchList.series = action.payload
         },
-        [addNewToWatchList.fulfilled]: () => {
-            return
+        [addNewToWatchList.fulfilled]: (action) => {
+
         },
         [addNewToWatchList.rejected]: (state, action) => {
+            state.error = action.payload
+        },
+        [removeNewToWatchList.pending]: (state, action) => {
+            console.log(action)
+        },
+        [removeNewToWatchList.fulfilled]: (state, action) => {
+            console.log(action)
+        },
+        [removeNewToWatchList.rejected]: (state, action) => {
             state.error = action.payload
         },
         [fetchData.fulfilled]: (state, action) => {

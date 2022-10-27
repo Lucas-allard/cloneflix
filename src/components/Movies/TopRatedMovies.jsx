@@ -5,28 +5,24 @@ import MovieCard from "../Card/MovieCard";
 import MovieModal from "../Modal/MovieModal";
 import './movies.scss';
 import '../Card/movieCard.scss';
+import MyLoader from "../Loader/Loader";
 
 
 const TopRatedMovies = () => {
     const {topRatedMovies} = useSelector(state => state.movies.data.movies);
     const {movie} = useSelector(state => state.movies.data);
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(true);
     const [isActiveModal, setIsActiveModal] = useState(false);
     const [isActiveSlide, setIsActiveSlide] = useState(false);
 
     useEffect(() => {
         dispatch(fetchTopRatedMovies())
-    }, [])
 
-    // const onHandleClick = () => {
-    //     window.scrollTo(-300, 0)
-    //     // setIsActiveSlide(true);
-    //     //
-    //     // setTimeout(() => {
-    //     //     setIsActiveSlide(false)
-    //     // }, 500)
-    //
-    // }
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 1000)
+    }, [])
 
     return (
         <>
@@ -34,18 +30,19 @@ const TopRatedMovies = () => {
                 <h1>Films les mieux notés</h1>
                 <div className="row">
                     <div className={`row-inner ${isActiveSlide ? "slide play" : "slide"}`}>
-                        {topRatedMovies && topRatedMovies.map((movie, index) =>
-                            (
-                                <div key={index}>
-                                    <MovieCard
-                                        title={movie.original_title}
-                                        data={movie}
-                                        isActiveModal={isActiveModal}
-                                        setIsActiveModal={setIsActiveModal}
-                                        type="movie"
-                                    />
-                                </div>
-                            )
+                        {topRatedMovies && topRatedMovies.map((movie, index) => {
+                                return isLoading ?
+                                    <MyLoader key={index}/>
+                                    : <div key={index}>
+                                        <MovieCard
+                                            title={movie.original_title}
+                                            data={movie}
+                                            isActiveModal={isActiveModal}
+                                            setIsActiveModal={setIsActiveModal}
+                                            type="movie"
+                                        />
+                                    </div>
+                            }
                         )}
                     </div>
                     <div className="prev-movies">

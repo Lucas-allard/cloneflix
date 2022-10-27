@@ -7,12 +7,14 @@ import {
 } from "../../store/slice/movieSlice";
 import MovieCard from "../Card/MovieCard";
 import MovieModal from "../Modal/MovieModal";
+import MyLoader from "../Loader/Loader";
 
 const Genre = ({genres, type}) => {
     const {moviesWithGenre} = useSelector(state => state.movies.data.movies)
     const {seriesWithGenre} = useSelector(state => state.movies.data.series)
     const {movie, serie} = useSelector(state => state.movies.data);
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(true)
     const [isActiveModal, setIsActiveModal] = useState(false);
 
 
@@ -22,6 +24,10 @@ const Genre = ({genres, type}) => {
         } else if (type === "serie") {
             dispatch(fetchSeriesWithGenres(genres));
         }
+
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 1000)
     }, [])
 
     useEffect(() => {
@@ -37,27 +43,30 @@ const Genre = ({genres, type}) => {
                             {
                                 type === "film" ?
                                     moviesWithGenre[index] && moviesWithGenre[index].map((movie, index) =>
-                                        <div key={index}>
-                                            <MovieCard
-                                                data={movie}
-                                                title={movie.original_title}
-                                                isActiveModal={isActiveModal}
-                                                setIsActiveModal={setIsActiveModal}
-                                                type="movie"
-                                            />
-                                        </div>
+                                        isLoading ? <MyLoader key={index}/> :
+                                            <div key={index}>
+                                                <MovieCard
+                                                    data={movie}
+                                                    title={movie.original_title}
+                                                    isActiveModal={isActiveModal}
+                                                    setIsActiveModal={setIsActiveModal}
+                                                    type="movie"
+                                                />
+                                            </div>
                                     )
-                                    : seriesWithGenre[index] && seriesWithGenre[index].map((serie, index) =>
-                                    <div key={index}>
-                                        <MovieCard
-                                            data={serie}
-                                            title={serie.original_name}
-                                            isActiveModal={isActiveModal}
-                                            setIsActiveModal={setIsActiveModal}
-                                            type="tv"
-                                        />
-                                    </div>
-                                )
+                                    :
+                                    seriesWithGenre[index] && seriesWithGenre[index].map((serie, index) =>
+                                        isLoading ? <MyLoader key={index}/> :
+                                            <div key={index}>
+                                                <MovieCard
+                                                    data={serie}
+                                                    title={serie.original_name}
+                                                    isActiveModal={isActiveModal}
+                                                    setIsActiveModal={setIsActiveModal}
+                                                    type="tv"
+                                                />
+                                            </div>
+                                    )
                             }
                         </div>
                     </div>

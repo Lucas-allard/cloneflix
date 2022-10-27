@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import {useSelector} from "react-redux";
 import MovieCard from "../Card/MovieCard";
+import MovieModal from "../Modal/MovieModal";
 
 const SearchResults = () => {
     const {multiSearch} = useSelector(state => state.user.search);
+    const {movie, serie} = useSelector(state => state.movies.data)
     const [isActiveModal, setIsActiveModal] = useState(false);
     console.log(multiSearch)
 
@@ -20,8 +22,15 @@ const SearchResults = () => {
                             setIsActiveModal={setIsActiveModal}
                         />
                     </div>
-                )
-                }
+                )}
+                {/*{isActiveModal &&*/}
+                {/*    <MovieModal*/}
+                {/*        title={serie.original_name}*/}
+                {/*        movie={serie}*/}
+                {/*        isActiveModal={isActiveModal}*/}
+                {/*        setIsActiveModal={setIsActiveModal}*/}
+                {/*    />*/}
+                {/*}*/}
             </div>
         </section>
 

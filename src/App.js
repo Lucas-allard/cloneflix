@@ -10,8 +10,10 @@ import SeriesPage from "./pages/SeriesPage";
 import WatchListPage from "./pages/WatchListPage";
 import Header from "./components/Header/Header";
 import SearchPage from "./pages/SearchPage";
+import {useSelector} from "react-redux";
 
 const App = () => {
+    const {userData} = useSelector(state => state.user)
     const [isActiveSearch, setIsActiveSearch] = useState(false);
 
     const onHandleCloseSearchBar = (e) => {
