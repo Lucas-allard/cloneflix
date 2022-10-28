@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import MovieCard from "../Card/MovieCard";
 import MovieModal from "../Modal/MovieModal";
+import Container from "../../commons/Container";
+import Row from "../../commons/Row";
 
 const SearchResults = () => {
     const {multiSearch} = useSelector(state => state.user.search);
@@ -11,14 +13,14 @@ const SearchResults = () => {
 
     const moviesResults = multiSearch?.filter((object, index) => object.media_type === "movie" ? object : null)
     const seriesResults = multiSearch?.filter((object, index) => object.media_type === "tv" ? object : null)
-    const personsResults = multiSearch?.filter((object, index) => object.media_type === "tv" ? object : null)
 
     useEffect(() => {
         console.log(moviesResults)
     }, [multiSearch])
     console.log(moviesResults)
-    return (
-        <section className="container">
+
+    return moviesResults || seriesResults ?
+        <Container>
             <h2>Film</h2>
             <div className='watchlist'>
                 {multiSearch && moviesResults.map((object, index) => (
@@ -47,20 +49,6 @@ const SearchResults = () => {
                     </div>
                 ))}
             </div>
-            <h2>Personnes</h2>
-            <div className="watchlist">
-                {multiSearch && personsResults.map((object, index) => (
-                    <div className="watchlist-item" key={index}>
-                        <MovieCard
-                            type="person"
-                            title={object.name}
-                            data={object}
-                            isActiveModal={isActiveModal}
-                            setIsActiveModal={setIsActiveModal}
-                        />
-                    </div>
-                ))}
-            </div>
             {isActiveModal && serie &&
                 <MovieModal
                     type='tv'
@@ -79,10 +67,15 @@ const SearchResults = () => {
                     setIsActiveModal={setIsActiveModal}
                 />
             }
-        </section>
+        </Container>
+        :
+        <Container>
+            <Row className='center'>
+                <p className='no-result'>
+                    Pas de <span>résultats</span>, vérifiez les <span>termes </span> de votre recherche</p>
+            </Row>
+        </Container>
 
-    )
-        ;
 }
 
 export default SearchResults;

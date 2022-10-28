@@ -26,18 +26,6 @@
     align-items: center;
     text-decoration: none;
 
-    .profil-badge {
-      margin-bottom: 1rem;
-
-      img {
-        border-radius: 5px;
-        border: 3px solid transparent;
-
-        &:hover {
-          border: 3px solid white;
-        }
-      }
-    }
 
     p {
       color: grey;
@@ -52,5 +40,22 @@
 
   .profil:visited {
     color: white
+  }
+}
+
+.profil-badge {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    border-radius: 5px;
+    border: 3px solid transparent;
+  }
+
+  &:hover img {
+    border: 3px solid white;
   }
 }

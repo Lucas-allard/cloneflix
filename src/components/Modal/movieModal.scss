@@ -1,6 +1,7 @@
 .modal-container {
   width: 100vw;
   height: 100vh;
+  min-height: 100%;
   background-color: rgba(24, 24, 24, 0.5);
   backdrop-filter: blur(4px);
   z-index: 9999999;
@@ -12,8 +13,11 @@
 
   .modal {
     position: absolute;
-    top: 50%;
+    right: 50%;
     left: 50%;
+    top: 20%;
+    bottom: 50%;
+    width: 780px;
     transform: translate(-50%, -50%);
     background-color: #181818;
     padding-bottom: 2rem;
@@ -95,6 +99,8 @@
     .modal-rate {
       display: flex;
       padding: 2rem 1rem;
+      background-color: #181818;
+
 
       p {
         margin: 0 1rem;
@@ -110,7 +116,7 @@
       display: flex;
       justify-content: space-around;
       line-height: 1.5;
-
+      background-color: #181818;
       .modal-content {
         flex: 2;
         padding: 2rem;

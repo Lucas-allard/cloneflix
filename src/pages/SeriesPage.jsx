@@ -2,10 +2,12 @@ import React, {useEffect, useState} from 'react';
 import Header from "../components/Header/Header";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchSeriesGenres} from "../store/slice/movieSlice";
-import Genre from "../components/Genres/Genre";
+import MoviesGenres from "../components/Genres/MoviesGenres";
 import PopularSeries from "../components/Series/PopularSeries";
 import TopRatedSeries from "../components/Series/TopRatedSeries";
 import MovieModal from "../components/Modal/MovieModal";
+import SeriesGenres from "../components/Genres/SeriesGenres";
+import {isAuthenticated} from "../store/slice/userSlice";
 
 const MoviesPage = () => {
     const {genres} = useSelector(state => state.movies.data.series)
@@ -15,17 +17,16 @@ const MoviesPage = () => {
 
     useEffect(() => {
         dispatch(fetchSeriesGenres())
+        dispatch(isAuthenticated())
     }, [])
-
 
     return (
         <>
             <PopularSeries/>
             <TopRatedSeries/>
             {genres &&
-                <Genre
+                <SeriesGenres
                     genres={genres}
-                    type="tv"
                     isActiveModal={isActiveModal}
                     setIsActiveModal={setIsActiveModal}
                 />

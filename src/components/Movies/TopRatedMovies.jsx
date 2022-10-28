@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchTopRatedMovies, fetchMovie} from "../../store/slice/movieSlice";
 import MovieCard from "../Card/MovieCard";
 import MovieModal from "../Modal/MovieModal";
-import './movies.scss';
+import '../../commons/layout.scss';
 import '../Card/movieCard.scss';
-import MyLoader from "../Loader/Loader";
+import Slider from "../Slider/Slider";
+import Row from "../../commons/Row";
+import Container from "../../commons/Container";
 
 
 const TopRatedMovies = () => {
@@ -14,7 +16,7 @@ const TopRatedMovies = () => {
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
     const [isActiveModal, setIsActiveModal] = useState(false);
-    const [isActiveSlide, setIsActiveSlide] = useState(false);
+
 
     useEffect(() => {
         dispatch(fetchTopRatedMovies())
@@ -26,31 +28,25 @@ const TopRatedMovies = () => {
 
     return (
         <>
-            <section className="container">
-                <h2>Films les mieux notés</h2>
-                <div className="row">
-                    <div className={`row-inner ${isActiveSlide ? "slide play" : "slide"}`}>
-                        {topRatedMovies && topRatedMovies.map((movie, index) => (<div key={index}>
-                                    <MovieCard
-                                        title={movie.original_title}
-                                        data={movie}
-                                        isActiveModal={isActiveModal}
-                                        setIsActiveModal={setIsActiveModal}
-                                        type="movie"
-                                        isLoading={isLoading}
-                                    />
-                                </div>
+            <Container title="Films les mieux notés">
+                <h2></h2>
+                <Row>
+                    <Slider>
+                        {topRatedMovies && topRatedMovies.map((movie, index) => (
+                                <MovieCard
+                                    title={movie.original_title}
+                                    data={movie}
+                                    isActiveModal={isActiveModal}
+                                    setIsActiveModal={setIsActiveModal}
+                                    type="movie"
+                                    isLoading={isLoading}
+                                    key={index}
+                                />
                             )
                         )}
-                    </div>
-                    <div className="prev-movies">
-                        <i className="fas fa-chevron-left"></i>
-                    </div>
-                    <div className="next-movies">
-                        <i className="fas fa-chevron-right"></i>
-                    </div>
-                </div>
-            </section>
+                    </Slider>
+                </Row>
+            </Container>
             {isActiveModal &&
                 <MovieModal
                     type="movie"

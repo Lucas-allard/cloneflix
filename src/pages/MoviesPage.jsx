@@ -4,8 +4,9 @@ import PopularMovies from "../components/Movies/PopularMovies";
 import TopRatedMovies from "../components/Movies/TopRatedMovies";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchMoviesGenres} from "../store/slice/movieSlice";
-import Genre from "../components/Genres/Genre";
+import MoviesGenres from "../components/Genres/MoviesGenres";
 import MovieModal from "../components/Modal/MovieModal";
+import {isAuthenticated} from "../store/slice/userSlice";
 
 const MoviesPage = () => {
     const {genres} = useSelector(state => state.movies.data.movies)
@@ -15,6 +16,7 @@ const MoviesPage = () => {
 
     useEffect(() => {
         dispatch(fetchMoviesGenres())
+        dispatch(isAuthenticated())
     }, [])
 
 
@@ -23,9 +25,8 @@ const MoviesPage = () => {
             <PopularMovies/>
             <TopRatedMovies/>
             {genres &&
-                <Genre
+                <MoviesGenres
                     genres={genres}
-                    type="movie"
                     isActiveModal={isActiveModal}
                     setIsActiveModal={setIsActiveModal}
                 />

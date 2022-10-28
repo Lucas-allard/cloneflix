@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import logo from '../../assets/images/Logo_cloneflix_C.png'
 import {fetchMovie, fetchSerie} from "../../store/slice/movieSlice";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,18 +8,20 @@ import {
     removeNewToWatchListSeries
 } from "../../store/slice/userSlice";
 import MyLoader from "../Loader/Loader";
+import {useNavigate} from "react-router-dom";
 
 const MovieCard = ({type, title, data, isActiveModal, setIsActiveModal, isLoading, isDeletable}) => {
-    const {userData} = useSelector(state => state.user)
+    const {userData, isAuthenticated} = useSelector(state => state.user)
     const dispatch = useDispatch();
-    const myRef = useRef(null);
+    const navigate = useNavigate();
     const titleInArray = title?.split(" ");
     const nameInArray = data.name?.split(" ");
+    let userId = userData?.id
 
     const onHandleClick = (id) => {
-        console.log(id)
         if (type === "movie") {
             dispatch(fetchMovie(id))
+
         } else if (type === "tv") {
             dispatch(fetchSerie(id))
         }
@@ -27,22 +29,29 @@ const MovieCard = ({type, title, data, isActiveModal, setIsActiveModal, isLoadin
 
         setTimeout(() => {
             setIsActiveModal(!isActiveModal);
+            window.scroll(0, 0)
         }, 1500)
     }
 
-    const onHandleAddToWatchList = (e, type, id, movie) => {
-
-        dispatch(addNewToWatchList({type, id, movie}))
-        e.currentTarget.disabled = true;
-
+    const onHandleAddToWatchList = (e, type, movie) => {;
+        if (isAuthenticated) {
+            dispatch(addNewToWatchList({type, userId, movie}))
+            e.currentTarget.disabled = true;
+        } else {
+            navigate('/')
+        }
     }
 
-    const onHandleRemoveToWatchList = (type, id, movie) => {
-        if (type === "movie") {
-            dispatch(removeNewToWatchListMovies({type, id, movie}))
-        }
-        if (type === "tv") {
-            dispatch(removeNewToWatchListSeries({type, id, movie}))
+    const onHandleRemoveToWatchList = (type, movie) => {
+        if (isAuthenticated) {
+            if (type === "movie") {
+                dispatch(removeNewToWatchListMovies({type, userId, movie}))
+            }
+            if (type === "tv") {
+                dispatch(removeNewToWatchListSeries({type, userId, movie}))
+            }
+        } else {
+            navigate('/')
         }
     }
 
@@ -50,13 +59,14 @@ const MovieCard = ({type, title, data, isActiveModal, setIsActiveModal, isLoadin
         isLoading ?
             <MyLoader/>
             :
-            <div className="tile" style={{width: '300px', height: '169px',}} onClick={() => onHandleClick(data.id)}>
-                <div className="tile-media">
+            <div className="tile" style={{width: '300px', height: '169px',}} >
+                <div className="tile-media" onClick={() => onHandleClick(data.id)}>
                     {data.backdrop_path &&
                         <img src={`https://image.tmdb.org/t/p/w300/${data.backdrop_path}`} alt="logo"/>
                     }
                     {data.profile_path &&
-                        <img  style={{height: "169px"}} src={`https://image.tmdb.org/t/p/w300/${data.profile_path}`} alt="logo"/>
+                        <img style={{height: "169px"}} src={`https://image.tmdb.org/t/p/w300/${data.profile_path}`}
+                             alt="logo"/>
                     }
                     {!data.backdrop_path && !data.profile_path && <img
                         src="https://img.freepik.com/free-vector/glitch-error-404-page_23-2148105403.jpg"
@@ -65,7 +75,6 @@ const MovieCard = ({type, title, data, isActiveModal, setIsActiveModal, isLoadin
                     />
                     }
                 </div>
-
                 <div className="tile-title">
                     <h3>
                         {titleInArray && titleInArray.map((title, index) => <span
@@ -85,14 +94,14 @@ const MovieCard = ({type, title, data, isActiveModal, setIsActiveModal, isLoadin
                                     <button>
                                         <i className="fas fa-play"></i>
                                     </button>
-                                    <button onClick={(e) => onHandleAddToWatchList(e, type, userData.id, data)}>
+                                    <button onClick={(e) => onHandleAddToWatchList(e, type, data)}>
                                         <i className="fas fa-plus"></i>
                                     </button>
                                     <button>
                                         <i className="fas fa-thumbs-up"></i>
                                     </button>
                                     {isDeletable ?
-                                        <button onClick={() => onHandleRemoveToWatchList(type, userData.id, data)}>
+                                        <button onClick={() => onHandleRemoveToWatchList(type, data)}>
                                             <i className="fas fa-trash"></i>
                                         </button>
                                         : null

@@ -10,6 +10,7 @@ body {
   font-size: 1.6rem;
   overflow-x: hidden;
   font-family: 'Open Sans', sans-serif;
+  min-height: 100%;
 }
 
 a, a:visited {
@@ -24,4 +25,18 @@ img {
 
 h2 {
   font-size: 3rem;
+}
+
+main {
+  min-height: 100%;
+}
+
+.no-result {
+  color: white;
+  font-size: 3rem;
+
+
+  span {
+    color: #D81F26;
+  }
 }

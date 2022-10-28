@@ -37,18 +37,6 @@ export const findMovie = async (id) => {
     return data
 }
 
-export const findMovies = async () => {
-    const data = await axios.get(`${ENTRYPOINT}/3/discover/movie?language=fr`, {
-        headers: {
-            Authorization: `Bearer ${TOKEN}`
-        }
-    })
-        .then(response => response.data)
-        .catch(e => console.log(e))
-
-    return data.results
-}
-
 export const findLastPopularMovies = async () => {
     const data = await axios.get(`${ENTRYPOINT}/3/movie/popular?language=fr`, {
         headers: {
@@ -99,18 +87,6 @@ export const findSerie = async (id) => {
         .then(response => response.data)
         .catch(e => console.log(e))
     return data
-}
-
-export const findSeries = async () => {
-    const data = await axios.get(`${ENTRYPOINT}/3/discover/tv?language=fr`, {
-        headers: {
-            Authorization: `Bearer ${TOKEN}`
-        }
-    })
-        .then(response => response.data)
-        .catch(e => console.log(e))
-
-    return data.results
 }
 
 export const findPopularSeries = async () => {

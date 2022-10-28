@@ -7,6 +7,7 @@ import {
     removeToWatchListMovies, removeToWatchListSeries,
     searchData
 } from "../../request/userRequest";
+import {movieSlice} from "./movieSlice";
 
 export const fetchUser = createAsyncThunk(
     'user/findUser',
@@ -78,11 +79,25 @@ export const userSlice = createSlice({
         },
         error: null,
     },
-    reducer: {},
+    reducers: {
+        isAuthenticated: (state) => {
+            let user = window.localStorage.getItem("user");
+            user = JSON.parse(user);
+            state.userData = user;
+            state.isAuthenticated = true;
+            console.log(state.userData)
+        },
+        logoutUser: (state) => {
+            state.userData = null;
+            state.isAuthenticated = false;
+            window.localStorage.clear()
+        }
+    },
     extraReducers: {
         [fetchUser.fulfilled]: (state, action) => {
             state.userData = action.payload
-            state.isAuthenticated = true;
+            console.log(state.userData)
+            window.localStorage.setItem('user', JSON.stringify((action.payload)))
         },
         [fetchWatchListMovies.fulfilled]: (state, action) => {
             state.watchList.movies = action.payload
@@ -117,5 +132,6 @@ export const userSlice = createSlice({
         },
     }
 })
+export const { isAuthenticated, logoutUser } = userSlice.actions
 
 export default userSlice.reducer

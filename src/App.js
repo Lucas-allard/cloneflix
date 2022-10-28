@@ -10,11 +10,11 @@ import SeriesPage from "./pages/SeriesPage";
 import WatchListPage from "./pages/WatchListPage";
 import Header from "./components/Header/Header";
 import SearchPage from "./pages/SearchPage";
-import {useSelector} from "react-redux";
-import PrivateRoute from "./components/Routes/PrivateRoute";
+import {useDispatch, useSelector} from "react-redux";
+import PrivateRoute from "./routes/PrivateRoute";
+import { isAuthenticated} from "./store/slice/userSlice";
 
 const App = () => {
-    const {userData} = useSelector(state => state.user)
     const [isActiveSearch, setIsActiveSearch] = useState(false);
 
     const onHandleCloseSearchBar = (e) => {
@@ -22,6 +22,7 @@ const App = () => {
             setIsActiveSearch(false);
         }
     }
+
 
     return (
         <main onClick={(e) => onHandleCloseSearchBar(e)}>
@@ -33,13 +34,10 @@ const App = () => {
                     <Route path="/movies/" element={<MoviesPage/>}/>
                     <Route path="/series" element={<SeriesPage/>}/>
                     <Route path="/search" element={<SearchPage/>}/>
-                    <Route path="/watchlist"
-                           element={
-                               <PrivateRoute>
-                                   <WatchListPage/>
-                               </PrivateRoute>
-                           }
-                    />
+                    <Route path="/" element={<PrivateRoute/>}>
+                        <Route path="/watchlist/movies" element={<WatchListPage/>}/>
+                        <Route path="/watchlist/series" element={<WatchListPage/>}/>
+                    </Route>
                 </Routes>
             </BrowserRouter>
         </main>

@@ -3,13 +3,15 @@ import './movieModal.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {deleteMovie, deleteSerie} from "../../store/slice/movieSlice";
 import {addNewToWatchList, removeNewToWatchListMovies, removeNewToWatchListSeries} from "../../store/slice/userSlice";
+import {useNavigate} from "react-router-dom";
 
 const MovieModal = ({type, movie, title, setIsActiveModal}) => {
-    const {userData} = useSelector(state => state.user);
+    const {userData, isAuthenticated} = useSelector(state => state.user);
     const dispatch = useDispatch()
+    const navigate = useNavigate();
     const titleInArray = title.split(" ");
     const data = movie;
-    console.log(data)
+
     const onHandleCloseModal = (e) => {
         if (e.clientX < 330 || e.clientX > 1000) {
             setIsActiveModal(false);
@@ -19,10 +21,12 @@ const MovieModal = ({type, movie, title, setIsActiveModal}) => {
     }
 
     const onHandleAddToWatchList = (e, type, id, movie) => {
-
-        dispatch(addNewToWatchList({type, id, movie}))
-        e.currentTarget.disabled = true;
-
+        if (isAuthenticated) {
+            dispatch(addNewToWatchList({type, id, movie}))
+            e.currentTarget.disabled = true;
+        } else {
+            navigate('/')
+        }
     }
 
     const onHandleRemoveToWatchList = (type, id, movie) => {

@@ -1,12 +1,15 @@
 import './header.scss';
 import React, {useEffect, useState} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import logo from '../../assets/images/Logo_cloneflix.png';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import SearchBar from "../Search/SearchBar";
+import {logoutUser} from "../../store/slice/userSlice";
 
 const Header = ({isActiveSearch, setIsActiveSearch}) => {
     const {userData} = useSelector(state => state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     return (
         <header>
@@ -20,7 +23,8 @@ const Header = ({isActiveSearch, setIsActiveSearch}) => {
                             <Link to="/browse"> Accueil</Link>
                             <Link to="/movies"> Films</Link>
                             <Link to="/series"> Series</Link>
-                            <Link to="/watchlist"> Ma liste</Link>
+                            <Link to="/watchlist/movies"> Ma liste de films</Link>
+                            <Link to="/watchlist/series"> Ma liste de séries</Link>
                         </li>
                     </ul>
                 </nav>
@@ -39,16 +43,16 @@ const Header = ({isActiveSearch, setIsActiveSearch}) => {
 
                             </div>
                         </li>
-                        {/*{userData &&*/}
-                        {/*    <li>*/}
-                        {/*        <Link to="/profile">*/}
-                        {/*            <div className='profil-badge'>*/}
-                        {/*                <img src={`https://image.tmdb.org/t/p/w45${userData.avatar.tmdb.avatar_path}`}*/}
-                        {/*                     alt=""/>*/}
-                        {/*            </div>*/}
-                        {/*        </Link>*/}
-                        {/*    </li>*/}
-                        {/*}*/}
+                        {userData &&
+                            <li >
+                                <div className='profil-badge' onClick={() => dispatch(logoutUser())}>
+                                    <img src={`https://image.tmdb.org/t/p/w45${userData.avatar.tmdb.avatar_path}`}
+                                         alt=""/>
+                                    <p>Déconnexion</p>
+                                </div>
+
+                            </li>
+                        }
                     </ul>
                 </nav>
             </div>
